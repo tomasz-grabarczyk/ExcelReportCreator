@@ -1,0 +1,84 @@
+<mso:cmd app="Excel" dt="1" slr="0" />
+<mso:customUI xmlns:x1="http://schemas.microsoft.com/office/2009/07/customui/macro" xmlns:mso="http://schemas.microsoft.com/office/2009/07/customui">
+	<mso:ribbon>
+		<mso:qat>
+			<mso:sharedControls>
+				<mso:control idQ="mso:AutoSaveSwitch" visible="true"/>
+				<mso:control idQ="mso:FileNewDefault" visible="false"/>
+				<mso:control idQ="mso:FileOpenUsingBackstage" visible="false"/>
+				<mso:control idQ="mso:FileSave" visible="true"/>
+				<mso:control idQ="mso:FileSendAsAttachment" visible="false"/>
+				<mso:control idQ="mso:FilePrintQuick" visible="false"/>
+				<mso:control idQ="mso:PrintPreviewAndPrint" visible="false"/>
+				<mso:control idQ="mso:Spelling" visible="false"/>
+				<mso:control idQ="mso:Undo" visible="true"/>
+				<mso:control idQ="mso:Redo" visible="true"/>
+				<mso:control idQ="mso:SortAscendingExcel" visible="false"/>
+				<mso:control idQ="mso:SortDescendingExcel" visible="false"/>
+				<mso:control idQ="mso:PointerModeOptions" visible="false"/>
+				<mso:control idQ="mso:WatchWindow" visible="true"/>
+			</mso:sharedControls>
+		</mso:qat>
+		<mso:tabs>
+			<mso:tab idQ="mso:TabDrawInk" visible="false"/>
+			<mso:tab idQ="mso:TabFormulas" visible="false"/>
+			<mso:tab idQ="mso:TabData" visible="false"/>
+			<mso:tab idQ="mso:TabReview" visible="false"/>
+			<mso:tab idQ="mso:TabView" visible="false"/>
+			<mso:tab idQ="mso:TabDeveloper">
+				<mso:group id="mso_c1.7C278E" label="Gridlines" autoScale="true">
+					<mso:control idQ="mso:GridlinesExcel" visible="true"/>
+				</mso:group>
+			</mso:tab>
+			<mso:tab idQ="mso:HelpTab" visible="false"/>
+			<mso:tab id="mso:c1.DDMAIN" label="Dispatching Desk">
+				<mso:group id="ATOS_DD_01" label="Change Report Appearance" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_01_01" label="Paint All Tickets" imageMso="FormatPainter" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!PaintAllTickets" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_01_02" label="Clear Irrelevant Data" imageMso="ClearFormats" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!clearIrrelevantData" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_01_03" label="Sort By Statuses" imageMso="FilterByResource" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!ApplyFiltersToStatus" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_01_04" label="Back To Normal" imageMso="RecurrenceEdit" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!backToNormal" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_02" label="Report Update" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_02_01" label="Update Report" imageMso="RecordsRefreshMenu" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!launchVLookUps" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_02_02" label="Add New Ticket" imageMso="TableInsertCellsDialog" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!addNewRowToReport" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_02_03" label="Remove First Row" imageMso="GroupQuerySetup" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!removeFirstRowFromReport" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_03" label="Ticket Checker" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_03_01" label="Check Dates" imageMso="CopyToPersonalCalendar" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!CheckDates" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_03_02" label="SAP Area Correctness" imageMso="AutoFormat" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!CheckSAPAreaCorrectness" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_03_03" label="SLA Check Layout" imageMso="PageSetupDialog" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!SLACheckLayout" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_08" label="ChaRM" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_08_01" label="Check ChaRM Statuses" imageMso="ChangeBinding" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!checkAllCharmStatuses" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_08_02" label="Hide Columns For ChaRM" imageMso="TableStyleBandedColumns" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!HideColumnsForChaRM" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_08_03" label="Load ChaRM Information" imageMso="PrintPreviewShrinkOnePage" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!LoadChaRMDataFromFiles" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_04" label="E-mail Notifications" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_04_01" label="All Tickets Notification" imageMso="ReviewSendForReview" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!launchListOfAllTickets" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_04_02" label="Clear Notifications" imageMso="TableEraser" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!clearReportCreator" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_04_03" label="Daily Transports" imageMso="RmsNavigationBar" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!launchDailyTranports" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_04_04" label="Regression Tests" imageMso="MasterDocumentInsertSubdocument" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!RegressionTests" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_05" label="Developer Counter" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_05_01" label="Unhide Counter" imageMso="TagMarkComplete" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!unhideDeveloperChecker" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_05_02" label="Run Counter" imageMso="ResultsPaneStartFindAndReplace" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!runDeveloperChecker" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_05_03" label="Hide Counter" imageMso="SharingRequestDeny" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!hideDeveloperCheckers" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_06" label="Other" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_06_01" label="Save To Mother File" imageMso="SourceControlCheckOut" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!saveWorkbookPopupWindow" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_06_02" label="Default Layout" imageMso="TableDesign" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!SetLayout" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_09" label="Pending Calculator" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_09_01" label="Run Pendings" imageMso="PauseTimer" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!deleteUnneededStatues" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_09_02" label="Resolution Time" imageMso="AcceptAndAdvance" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!copyAndPasteResolvedDate" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_09_03" label="Clear Pending Calculator" imageMso="TableStyleClear" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!pendingCalculatorClear" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_09_04" label="Round Pending Down" imageMso="OutlineMoveDown" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!roundPending" visible="true"/>
+				</mso:group>
+				<mso:group id="ATOS_DD_10" label="Working Now" autoScale="true">
+					<mso:button id="BTN_ATOS_DD_10_01" label="Tomasz Grabarczyk" imageMso="MailSelectNames" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!TomaszGrabarczykEditing" visible="true"/>
+					<mso:button id="BTN_ATOS_DD_10_02" label="Adam Rusnak" imageMso="MailSelectNames" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!AdamRusnakEditing" visible="true"/>
+				</mso:group>
+			</mso:tab>
+		</mso:tabs>
+	</mso:ribbon>
+</mso:customUI>
