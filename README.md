@@ -1,5 +1,5 @@
 I created this project to (almost fully) automate report creation that I'm responsible during my work.
-It has multiple options, such as reading from file (with deleting it from drive after), comparing info, hightligting cells that are needed to be filled etc.
+It has multiple options, such as reading from file (with deleting it from drive after), comparing info, hightligting cells that are needed to be filled, converting dates on double click etc.
 
 Later I'll provide Excel report that goes with that with some test data and .xlam (VBA macros) file that has all of these macros built-in.
 
