@@ -3,6 +3,6 @@ It has multiple options, such as reading from file (with deleting it from drive 
 
 Later I'll provide Excel report that goes with that with some test data and .xlam (VBA macros) file that has all of these macros built-in.
 
-It has very specific parths that are needed to be changed in customUI file to be working correctly (and imported to Excel ribbon to work - customUI file after importing creates new tab in ribbon).
+It has very specific parths that are needed to be changed in exportedUI file to be working correctly (and imported to Excel ribbon to work - exportedUI file creates new tab in ribbon after importing).
 
 It isn't done by any means, constantly upgrading and optimizing it, as well as adding new functions when needed.
