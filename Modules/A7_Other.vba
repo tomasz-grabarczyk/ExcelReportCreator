@@ -25,9 +25,3 @@ Sub DefaultLayout()
     Sheets("Sheet1").Select
     Range("A1").Select
 End Sub
-
-
-
-
-
-
