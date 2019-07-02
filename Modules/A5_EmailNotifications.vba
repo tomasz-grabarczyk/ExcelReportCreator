@@ -32,26 +32,3 @@ Sub ClearNotifications()
         .Apply
     End With
 End Sub
-Sub LogisticsReminder()
-    Sheets("LogisticsReminder").Visible = True
-    
-    Columns("A:B").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("G:J").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("L:X").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("AB:AD").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("AG:BG").Select
-    Selection.EntireColumn.Hidden = True
-    
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=4, Criteria1:=Array( _
-        "Logistic ACE - (PP, PM, QM, MM)", "Logistic ACE - Mass upload/change", _
-        "Logistic ACE - WM (APL)", "Logistics"), Operator:=xlFilterValues
-        
-    ActiveSheet.Range("$A$1:$BG$3323").AutoFilter Field:=6, Criteria1:=Array( _
-        "Assigned", "In Progress", "Pending"), Operator:=xlFilterValues
-    
-    Call ScrollMaxUpAndLeft
-End Sub
