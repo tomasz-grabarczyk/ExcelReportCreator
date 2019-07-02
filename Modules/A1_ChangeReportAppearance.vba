@@ -1,49 +1,54 @@
 Sub PaintAllTickets()
-    Call startMacroShowMessage(3)
+    Call StartMacroShowMessage(3)
     
-    Call backToNormal
+    Call BackToNormal
     Sheets("Sheet1").Select
-
+    
+    'Count number of rows with values
+    Dim lastRowStatus As Long: lastRowStatus = Cells(Rows.Count, 3).End(xlUp).Row
+    
     'Paint Resolved statuses
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=6, Criteria1:="Resolved"
-    Range("A1:BG10000").Select
+    ActiveSheet.Range("$A$1:$BG$" & lastRowStatus).AutoFilter Field:=6, Criteria1:="Resolved"
+    Range("A1:BG" & lastRowStatus).Select
     With Selection.Interior
         .ThemeColor = xlThemeColorAccent5
         .TintAndShade = 0.799981688894314
     End With
     
     'Paint Cancelled and Closed statuses
-    Call backToNormal
+    Call BackToNormal
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=6, Criteria1:="=Cancelled", Operator:=xlOr, Criteria2:="=Closed"
-    Range("A1:BG10000").Select
+    ActiveSheet.Range("$A$1:$BG$" & lastRowStatus).AutoFilter Field:=6, Criteria1:="=Cancelled", Operator:=xlOr, Criteria2:="=Closed"
+    Range("A1:BG" & lastRowStatus).Select
     With Selection.Interior
         .ThemeColor = xlThemeColorAccent6
         .TintAndShade = 0.799981688894314
     End With
     
     'Paint N/A Consultants
-    Call backToNormal
+    Call BackToNormal
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=5, Criteria1:="N/A"
-    Range("A1:BG10000").Select
+    ActiveSheet.Range("$A$1:$BG$" & lastRowStatus).AutoFilter Field:=5, Criteria1:="N/A"
+    Range("A1:BG" & lastRowStatus).Select
     With Selection.Interior
         .ThemeColor = xlThemeColorAccent4
         .TintAndShade = 0.799981688894314
     End With
     
     'Paint everything else white
-    Call backToNormal
+    Call BackToNormal
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=6, Criteria1:=Array( _
+    ActiveSheet.Range("$A$1:$BG$" & lastRowStatus).AutoFilter Field:=6, Criteria1:=Array( _
         "Assigned", "In Progress", "Pending"), Operator:=xlFilterValues
-    Range("A1:BG10000").Select
+    Range("A1:BG" & lastRowStatus).Select
     With Selection.Interior
         .Color = RGB(255, 255, 255)
         .TintAndShade = 0
     End With
     
-    Call backToNormal
+    Call BackToNormal
+    
+    'Paint header row
     Sheets("Sheet1").Select
     Rows(1).Select
     With Selection.Interior
@@ -51,22 +56,23 @@ Sub PaintAllTickets()
         .TintAndShade = 0
     End With
     
+    'Scroll max up and left
     ActiveWindow.ScrollColumn = 1
     ActiveWindow.ScrollRow = 1
     Sheets("Sheet1").Select
     Range("A1").Select
     
-    Call stopMacroShowMessage
+    Call StopMacroShowMessage
 End Sub
-Sub clearIrrelevantData()
-    Call startMacroShowMessage(5)
+Sub ClearIrrelevantData()
+    Call StartMacroShowMessage(5)
     
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$AW$3000").AutoFilter Field:=5, Criteria1:="N/A"
+    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=5, Criteria1:="N/A"
     Range("L2:Q10000,V2:X10000,AA2:AB10000").ClearContents
     Range("A1").Select
     
-    Call backToNormal
+    Call BackToNormal
     
     Sheets("Sheet1").Select
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:=Array( _
@@ -74,7 +80,7 @@ Sub clearIrrelevantData()
         xlFilterValues
     Range("G2:G10000").ClearContents
     
-    Call backToNormal
+    Call BackToNormal
     
     Sheets("Sheet1").Select
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:=Array( _
@@ -82,7 +88,7 @@ Sub clearIrrelevantData()
         xlFilterValues
     Range("M2:M10000").ClearContents
     
-    Call backToNormal
+    Call BackToNormal
     
     Sheets("Sheet1").Select
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:=Array( _
@@ -90,30 +96,30 @@ Sub clearIrrelevantData()
         xlFilterValues
     Range("AG2:AX10000").ClearContents
     
-    Call backToNormal
+    Call BackToNormal
     
-    Call stopMacroShowMessage
+    Call StopMacroShowMessage
 End Sub
-Sub ApplyFiltersToStatus()
+Sub SortByStatuses()
 
     Sheets("Sheet1").Select
     
+    'Sort statuses by: Assigned -> In Progress -> Pending -> Resolved -> Closed -> Cancelled
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
         Range("F2:F10000"), SortOn:=xlSortOnValues, Order:=xlAscending, CustomOrder _
         :="Assigned,In Progress,Pending,Resolved,Closed,Cancelled", DataOption:= _
         xlSortNormal
     With ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
         .Orientation = xlTopToBottom
         .SortMethod = xlPinYin
         .Apply
     End With
 
 End Sub
-Sub backToNormal()
+Sub BackToNormal()
     Dim ws As Worksheet
+    'Clear conditional formating in entire sheet
     For Each ws In ThisWorkbook.Worksheets
         ws.Cells.FormatConditions.Delete
     Next ws
@@ -147,3 +153,4 @@ Sub backToNormal()
     
    
 End Sub
+
