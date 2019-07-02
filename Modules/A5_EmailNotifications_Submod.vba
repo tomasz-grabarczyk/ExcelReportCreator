@@ -1,6 +1,4 @@
 Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As String, columnsToBeDeleted As String)
-    Call StartMacroShowMessage(10)
-    
     Sheets("DailyTransports").Visible = True
     Sheets("DailyTransports").Select
     Range(cellRange).ClearContents
@@ -36,12 +34,8 @@ Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As
         Kill filePath
     End If
     
-    Call SortByStatuses
-    
     Sheets("DailyTransports").Select
     Range("A1").Select
-    
-    Call StopMacroShowMessage
 End Sub
 Sub SortData()
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
@@ -68,6 +62,8 @@ Sub FormatText()
     Selection.Font.Bold = True
 End Sub
 Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As String, Optional ByVal area_third As String, Optional ByVal area_fourth As String)
+    Call StartMacroShowMessage(10)
+    
     Call ClearNotifications
     
     Sheets("ReportCreator").Visible = xlSheetVisible
@@ -177,6 +173,11 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     With ActiveSheet.Range("I1:I300")           ' removes formatting from empty cells
     .SpecialCells(xlCellTypeBlanks).ClearFormats
     End With
-  
+    
+    Call SortByStatuses
+    
+    Sheets("ReportCreator").Select
     Range("A1").Select
+    
+    Call StopMacroShowMessage
 End Sub
