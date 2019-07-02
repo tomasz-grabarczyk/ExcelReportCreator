@@ -1,9 +1,9 @@
-Sub deleteUnneededStatues()
-    Call startMacroShowMessage(3)
+Sub RunPendings()
+    Call StartMacroShowMessage(3)
     
     Sheets("PendingCalculator").Select
     Range("A22").Select
-    ActiveSheet.Paste
+    ActiveSheet.Paste ' wykomentowac w razie problemu z pending calc
     
     ActiveSheet.Range("$A$21:$E$500").AutoFilter Field:=1, Criteria1:="<>Status has been changed to*"
     ActiveSheet.Range("$A$22:$E$500").ClearContents
@@ -21,8 +21,10 @@ Sub deleteUnneededStatues()
     
     If rgFoundAnything Is Nothing Then
         MsgBox "There is nothing to work with!"
+        Call ClearPendingCalculator
     ElseIf rgFound Is Nothing Then
         MsgBox "There aren't statuses on Pending!"
+        Call ClearPendingCalculator
     Else
         Dim lastRowWithValue As Long
         lastRowWithValue = Cells(Rows.Count, 1).End(xlUp).Row
@@ -64,58 +66,9 @@ Sub deleteUnneededStatues()
         Call pendingCalculatorSortDates
     End If
     
-    Call stopMacroShowMessage
-    
+    Call StopMacroShowMessage
 End Sub
-Sub pendingCalculatorClear()
-    Sheets("PendingCalculator").Select
-    
-    Range("A22:E22").AutoFilter
-    
-    Range("A22:E1000").ClearContents
-    
-    Range("A22:E1000").Select
-    With Selection.Interior
-        .Pattern = xlSolid
-        .PatternColorIndex = xlAutomatic
-        .ThemeColor = xlThemeColorDark1
-        .TintAndShade = 0
-        .PatternTintAndShade = 0
-    End With
-    
-    Range("B10:C19").ClearContents
-    Range("I:J").ClearContents
-    Range("G4").ClearContents
-    Range("G7").ClearContents
-    Range("A22").Select
-End Sub
-Sub pendingCalculatorCopyTodaysDate()
-    
-    Range("C4").Value = Format(Now(), "DD.MM.YYYY HH:MM:SS")
-    Range("C4").Replace "-", "/"
-    
-    Rows("22:22").Select
-    Selection.Insert Shift:=xlDown
-    Range("B4:C4").Copy
-    Range("A22").PasteSpecial Paste:=xlPasteValues
-    Range("A22:E500").Select
-    With Selection.Interior
-        .PatternColorIndex = xlAutomatic
-        .ThemeColor = xlThemeColorDark1
-        .TintAndShade = 0
-        .PatternTintAndShade = 0
-    End With
-    With Selection.Font
-        .Size = 8
-        .Bold = False
-        .TintAndShade = 0
-        .ThemeFont = xlThemeFontNone
-    End With
-
-    Call pendingCalculatorSortDates
-End Sub
-
-Sub copyAndPasteResolvedDate()
+Sub ResolutionTime()
     Dim FindString As String
     Dim rng As Range
     FindString = Range("U4").Value
@@ -151,100 +104,33 @@ Sub copyAndPasteResolvedDate()
     Sheets("PendingCalculator").Select
     Range("U4").ClearContents
     
-    Call pendingCalculatorClear
+    Call ClearPendingCalculator
     
     Sheets("Sheet1").Select
-    
 End Sub
-
-Sub copyPendingTime()
-    Range("G4").Copy
-    Range("G4").Select
-End Sub
-
-Sub roundPending()
-    Range("G7").Value = Application.WorksheetFunction.RoundDown(Range("G4").Value / 10, 0)
-    Range("G7").Copy
-End Sub
-Sub pendingCalculatorSortDates()
-    
-    ActiveSheet.Range("$A$21:$E$500").AutoFilter Field:=1, Criteria1:= _
-        "Status has been changed to Pending"
-        
-    Range("B22:B300").Copy
-    Range("I10").PasteSpecial Paste:=xlPasteValues
-    
-    ActiveSheet.Range("$A$21:$E$300").AutoFilter Field:=1, Criteria1:=Array( _
-        "Status has been changed to Assigned", _
-        "Status has been changed to In Progress", _
-        "Status has been changed to Resolved" _
-        ), Operator:=xlFilterValues
-        
-    Range("B22:B100").Copy
-    Range("J10").PasteSpecial Paste:=xlPasteValues
-    Range("F10:G20").Copy
-    Range("L10").PasteSpecial Paste:=xlPasteValues
-
-    ActiveWorkbook.Worksheets("PendingCalculator").Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("PendingCalculator").Sort.SortFields.Add Key:=Range("L10"), _
-        SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
-    With ActiveWorkbook.Worksheets("PendingCalculator").Sort
-        .SetRange Range("L10:M19")
-        .Header = xlGuess
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    Selection.Copy
-    
-    Range("B10").PasteSpecial Paste:=xlPasteValues
-    Range("I10:J200").ClearContents
-    Range("L10:M19").ClearContents
-    
-    ActiveSheet.Range("$A$21:$E$200").AutoFilter Field:=1, Criteria1:=Array( _
-        "Status has been changed to Assigned", _
-        "Status has been changed to In Progress", _
-        "Status has been changed to Pending", _
-        "Status has been changed to Resolved" _
-        ), Operator:=xlFilterValues
-    
-    Range("N4").Copy
-    Range("G4").PasteSpecial Paste:=xlPasteValues
-
-    Range("A22:E500").Select
-    With Selection
-        .Interior.PatternColorIndex = xlAutomatic
-        .Interior.ThemeColor = xlThemeColorDark1
-        .Interior.TintAndShade = 0
-        .Interior.PatternTintAndShade = 0
-        .Font.Size = 8
-        .Font.Bold = False
-        .Font.TintAndShade = 0
-        .Font.ThemeFont = xlThemeFontNone
-        .HorizontalAlignment = xlCenter
-        .VerticalAlignment = xlCenter
-    End With
-
-    Range("A22:E500").Select
-    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlEqual, _
-        Formula1:="=""Status has been changed to Pending"""
-    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
-    With Selection.FormatConditions(1).Font
-        .Color = -16383844
-        .TintAndShade = 0
-    End With
-    With Selection.FormatConditions(1).Interior
-        .PatternColorIndex = xlAutomatic
-        .Color = 13551615
-        .TintAndShade = 0
-    End With
-    Selection.FormatConditions(1).StopIfTrue = False
-    
-    Range("G4").Select
-End Sub
-Sub copyTicketNumber(ticketNumber As String)
+Sub ClearPendingCalculator()
     Sheets("PendingCalculator").Select
-    Range("U4").Value = ticketNumber
-    Sheets("NewChecker").Select
+    
+    Range("A22:E22").AutoFilter
+    
+    Range("A22:E1000").ClearContents
+    
+    Range("A22:E1000").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+    Range("B10:C19").ClearContents
+    Range("I:J").ClearContents
+    Range("G4").ClearContents
+    Range("G7").ClearContents
+    Range("A22").Select
+End Sub
+Sub RoundPendingDown()
+    Range("G7").Value = Application.WorksheetFunction.RoundDown(Range("G4").Value / 10, 0)
+    Call PendingTimeCopyToMainSheet
 End Sub
