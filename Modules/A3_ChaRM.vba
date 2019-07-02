@@ -1,173 +1,71 @@
-Sub CheckDates()
-    Call StartMacroShowMessage(2)
-        
+Sub CheckChaRMStatuses()
+    Dim lRow As Long: lRow = Cells(Rows.Count, 3).End(xlUp).Row
+    
+    Call StartMacroShowMessage(6)
+    
+    Call HideColumnsForChaRM
+    
+    Sheets("Sheet1").Select
+        Range("BA2:BB" & lRow).ClearContents
+    
+    For rfc = 2 To lRow
+        Range("AY" & rfc).Select
+        Call CompareStringsRfC
+    Next rfc
+    
+    For cd = 2 To lRow
+        Range("AZ" & cd).Select
+        Call CompareStringsCD
+    Next cd
+
+    ActiveWindow.ScrollRow = 1
+    
+    Call StopMacroShowMessage
+End Sub
+Sub HideColumnsForChaRM()
     Columns("A:B").Select
-    Selection.EntireColumn.Hidden = True
+        Selection.EntireColumn.Hidden = True
     Columns("D:E").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("G:J").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("R:BG").Select
-    Selection.EntireColumn.Hidden = True
-    
-    Dim checkDatesToCell As Integer: checkDatesToCell = 10000
-    
-    For colorAssigned = 2 To checkDatesToCell
-        If (Range("F" & colorAssigned).Value = "Assigned" Or Range("F" & colorAssigned).Value = "In Progress" Or Range("F" & colorAssigned).Value = "Pending" Or Range("F" & colorAssigned).Value = "Resolved") And Range("K" & colorAssigned).Value = "" Then
-            Range("K" & colorAssigned).Select
-            With Selection.Interior
-                .Color = 13260
-                .PatternTintAndShade = 0
-            End With
-            'Color Incident Numbers
-            Range("C" & colorAssigned).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
-        End If
-    Next colorAssigned
-    
-    For colorInProgress = 2 To checkDatesToCell
-        If (Range("F" & colorInProgress).Value = "In Progress" Or Range("F" & colorInProgress).Value = "Pending" Or Range("F" & colorInProgress).Value = "Resolved") And Range("L" & colorInProgress).Value = "" Then
-            Range("L" & colorInProgress).Select
-            With Selection.Interior
-                .Color = 13260
-                .PatternTintAndShade = 0
-            End With
-            'Color Incident Numbers
-            Range("C" & colorInProgress).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
-        End If
-    Next colorInProgress
-    
-    For colorPending = 2 To checkDatesToCell
-        If Range("F" & colorPending).Value = "Pending" And Range("M" & colorPending).Value = "" Then
-            Range("M" & colorPending).Select
-            With Selection.Interior
-                .Color = 13260
-                .PatternTintAndShade = 0
-            End With
-            Range("C" & colorPending).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
-        ElseIf Range("F" & colorPending).Value = "Resolved" And Range("N" & colorPending).Value = "" Then
-            Range("N" & colorPending).Select
-            With Selection.Interior
-                .Color = 13260
-                .PatternTintAndShade = 0
-            End With
-            Range("C" & colorPending).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
-        End If
-    Next colorPending
-    
-    For colorResolved = 2 To checkDatesToCell
-        If Range("F" & colorResolved).Value = "Resolved" And Range("O" & colorResolved).Value = "" Then
-        Range("O" & colorResolved).Select
-            With Selection.Interior
-                .Color = 13260
-                .PatternTintAndShade = 0
-            End With
-            Range("C" & colorResolved).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
-        End If
-    Next colorResolved
-    
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
+        Selection.EntireColumn.Hidden = True
+    Columns("G:AX").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("BC:BD").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("BF:BG").Select
+        Selection.EntireColumn.Hidden = True
 
-    ActiveWindow.ScrollRow = 1
-    ActiveWindow.ScrollColumn = 1
-    Range("C1").Select
+    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=6, Criteria1:=Array( _
+                                                                                "Assigned", _
+                                                                                "In Progress", _
+                                                                                "Pending" _
+                                                                                ), Operator:=xlFilterValues
+    Dim ticketNumbersToColor As Long: ticketNumbersToColor = Cells(Rows.Count, 3).End(xlUp).Row
+    
+    For colorIterator = 2 To ticketNumbersToColor
+        If Not Range("BA" & colorIterator).Value = "" Or Not Range("BB" & colorIterator).Value = "" Then
+            Range("C" & colorIterator).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next colorIterator
+    
+    Call FilterIncidentNumbersByColor
+    
+    'Exclude below from filtering
+    'ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=57, Criteria1:="<>Status in ChaRM cannot be changed due to upgrade (freeze)."
+End Sub
+Sub LoadChaRMInformation()
+    Call StartMacroShowMessage(6)
+    
+    ChDir "C:\Users\" & Environ$("Username") & "\Downloads"
+    Call LoadChaRMDataFromFilesBackend("rfc.csv", "A1", "ChaRM RfC", "Z")
+    Call LoadChaRMDataFromFilesBackend("cd.csv", "A1", "ChaRM CD", "V")
+    
+    Call CopyDataFromRfCAndCDToChaRMSheet
+    Call RemoveMultipleOccurencesOfTickets
+    Call ScrollMaxUpAndLeft
     
     Call StopMacroShowMessage
 End Sub
-Sub SAPAreaCorrectness()
-    Call StartMacroShowMessageString("checking SAP Area correctness ...")
-    
-    Dim CheckSAPAreaCorrectness As Integer: CheckSAPAreaCorrectness = 10000
-    
-    For C = 2 To CheckSAPAreaCorrectness
-        If Not Range("H" & C).Value = "" And Not Range("F" & C).Value = "" Then
-            If Not (Range("H" & C).Value = "BP2" Or _
-                    Range("H" & C).Value = "ACE" Or _
-                    Range("H" & C).Value = "BP5" Or _
-                    Range("H" & C).Value = "HRP" Or _
-                    Range("H" & C).Value = "RE-FX" Or _
-                    Range("H" & C).Value = "IFRS") Then
-                Range("H" & C).Select
-                With Selection.Interior
-                    .Color = 13260
-                    .PatternTintAndShade = 0
-                End With
-                'Color Incident Numbers
-                Range("C" & C).Select
-                With Selection.Interior
-                    .Color = 16751001
-                    .PatternTintAndShade = 0
-                End With
-            End If
-        End If
-    Next C
-    
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
-    
-    ActiveWindow.ScrollRow = 1
-    ActiveWindow.ScrollColumn = 1
-    Range("C1").Select
-    
-    Call StopMacroShowMessage
-End Sub
-Sub SLACheckLayout()
-
-    Call BackToNormal
-    
-    Sheets("Sheet1").Select
-    
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=6, Criteria1:=Array( _
-        "Assigned", _
-        "In Progress", _
-        "Pending"), Operator:=xlFilterValues
-    
-    Columns("A:A").EntireColumn.Hidden = True
-    Columns("G:G").EntireColumn.Hidden = True
-    Columns("I:Y").EntireColumn.Hidden = True
-    Columns("AA:AD").EntireColumn.Hidden = True
-    Columns("AF:AM").EntireColumn.Hidden = True
-    Columns("AO:AV").EntireColumn.Hidden = True
-    Columns("AY:BG").EntireColumn.Hidden = True
-    
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=5
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=38, Criteria1:=">=" & 11
-    
-    ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
-        Range("AX1:AX10000"), SortOn:=xlSortOnValues, Order:=xlAscending, _
-        DataOption:=xlSortNormal
-    With ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    
-    Range("A1").Select
-    Sheets("Sheet1").Select
-    ActiveWindow.ScrollColumn = 1
-    ActiveWindow.ScrollRow = 1
-    Range("A1").Select
-End Sub
-
-
