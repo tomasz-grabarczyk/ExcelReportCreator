@@ -1,42 +1,47 @@
 Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As String, columnsToBeDeleted As String)
-        Sheets("DailyTransports").Visible = True
-        Sheets("DailyTransports").Select
-        Range(cellRange).ClearContents
+    Call StartMacroShowMessage(10)
     
-        Dim wb As Workbook
-        
-        thisfile = Sheets("PendingCalculator").Range("Q18").Value
-        
-        If Dir(filePath) = "" Then
-            MsgBox "Could not find the file: " & filePath
-            Exit Sub
-        End If
-        
-        Set wb = Workbooks.Open(filePath)
+    Sheets("DailyTransports").Visible = True
+    Sheets("DailyTransports").Select
+    Range(cellRange).ClearContents
 
-        Range(columnsToBeDeleted).Select
-        Selection.Delete Shift:=xlToLeft
-        
-        Rows("1:1").Delete Shift:=xlToLeft
-        
-        Range("A1:V100").Copy
-        Windows(thisfile).Activate
-        Range(copyToCell).Select
-        Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
-            :=False, Transpose:=False
-        
-        Windows(filePath).Activate
-        ActiveWorkbook.Save
-        ActiveWindow.Close
-        
-        
-        If Len(Dir$(filePath)) > 0 Then
-            Kill filePath
-        End If
-        
-        Sheets("DailyTransports").Select
+    Dim wb As Workbook
     
-        Range("A1").Select
+    thisfile = Sheets("PendingCalculator").Range("Q18").Value
+    
+    If Dir(filePath) = "" Then
+        MsgBox "Could not find the file: " & filePath
+        Exit Sub
+    End If
+    
+    Set wb = Workbooks.Open(filePath)
+
+    Range(columnsToBeDeleted).Select
+    Selection.Delete Shift:=xlToLeft
+    
+    Rows("1:1").Delete Shift:=xlToLeft
+    
+    Range("A1:V100").Copy
+    Windows(thisfile).Activate
+    Range(copyToCell).Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    
+    Windows(filePath).Activate
+    ActiveWorkbook.Save
+    ActiveWindow.Close
+    
+    
+    If Len(Dir$(filePath)) > 0 Then
+        Kill filePath
+    End If
+    
+    Call SortByStatuses
+    
+    Sheets("DailyTransports").Select
+    Range("A1").Select
+    
+    Call StopMacroShowMessage
 End Sub
 Sub SortData()
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
