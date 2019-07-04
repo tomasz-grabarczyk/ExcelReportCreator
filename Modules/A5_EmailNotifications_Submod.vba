@@ -1,4 +1,7 @@
 Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As String, columnsToBeDeleted As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+        
     Sheets("DailyTransports").Visible = True
     Sheets("DailyTransports").Select
     Range(cellRange).ClearContents
@@ -38,6 +41,9 @@ Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As
     Range("A1").Select
 End Sub
 Sub SortData()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add Key:=Range _
         ("E1:E10000"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
@@ -51,6 +57,9 @@ Sub SortData()
     End With
 End Sub
 Sub FormatText()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     With Selection.Font
         .Name = "Calibri"
         .Size = 16
@@ -62,16 +71,17 @@ Sub FormatText()
     Selection.Font.Bold = True
 End Sub
 Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As String, Optional ByVal area_third As String, Optional ByVal area_fourth As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Call StartMacroShowMessage(10)
-    
+
     Call ClearNotifications
     
-    Sheets("ReportCreator").Visible = xlSheetVisible
-    
+    Sheets("ReportCreator").Visible = True
     
     Sheets("ReportCreator").Select
     Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Select
-    
     
     Sheets("Sheet1").Select
     Columns("A:A").EntireColumn.Hidden = True
@@ -84,9 +94,7 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Assigned"
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=4, Criteria1:=Array(area, area_second, area_third, area_fourth), Operator:=xlFilterValues
     
-    
     Call SortData
-    
     
     Range("B2:AW10000").Copy
     Sheets("ReportCreator").Select
@@ -113,18 +121,14 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Sheets("ReportCreator").Select
     Sheets("ReportCreator").Paste
     
-    
     Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).Value = "PENDING"
     Call FormatText
-    
     
     Range("A3:I3").Copy
     Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).PasteSpecial
     Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Select
-    
-    
     
     Sheets("Sheet1").Select
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Pending"
@@ -136,9 +140,7 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Sheets("ReportCreator").Select
     Sheets("ReportCreator").Paste
 
-
     Call BackToNormal
-    
     
     Sheets("ReportCreator").Select
     Columns("I:I").Select
