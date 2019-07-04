@@ -1,21 +1,33 @@
-Sub startMacroShowMessageString(nameOfProcess As String)
+Sub StartMacroShowMessageString(nameOfProcess As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Application.ScreenUpdating = False
     Application.Cursor = xlWait
     Application.DisplayStatusBar = True
-    Application.StatusBar = "Working on it ... I'm working on " & nameOfProcess
+    Application.StatusBar = "Working on it ... " & nameOfProcess
 End Sub
-Sub startMacroShowMessage(numberOfSecond As Integer)
+Sub StartMacroShowMessage(numberOfSecond As Integer)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Application.ScreenUpdating = False
     Application.Cursor = xlWait
     Application.DisplayStatusBar = True
     Application.StatusBar = "Working on it ... It will take about " & numberOfSecond & " seconds ..."
 End Sub
-Sub stopMacroShowMessage()
+Sub StopMacroShowMessage()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Application.Cursor = xlDefault
     Application.StatusBar = False
     Application.ScreenUpdating = True
 End Sub
-Sub timerToPaste()
+Sub TimerToPaste()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     'start timer
     Dim StartTime As Double
         Dim SecondsElapsed As Double
