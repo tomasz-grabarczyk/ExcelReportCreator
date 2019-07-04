@@ -1,5 +1,7 @@
 Sub SaveToMotherFile()
-    
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     If Environ$("Username") = "A702387" Then
         Call SaveToMotherFileBackend( _
                                     "https://atos365-my.sharepoint.com/personal/tomasz_grabarczyk_atos_net/Documents/AMS_ARDAGH/AMS_ARDAGH.xlsm", _
@@ -12,6 +14,9 @@ Sub SaveToMotherFile()
     End If
 End Sub
 Sub DefaultLayout()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Sheets("Sheet1").Select
     ActiveWindow.Zoom = 85
     ActiveWindow.ScrollColumn = 1
