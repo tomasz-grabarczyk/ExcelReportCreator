@@ -1,4 +1,7 @@
 Sub CheckDates()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Call StartMacroShowMessage(2)
         
     Columns("A:B").Select
@@ -94,6 +97,9 @@ Sub CheckDates()
     Call StopMacroShowMessage
 End Sub
 Sub SAPAreaCorrectness()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Call StartMacroShowMessageString("checking SAP Area correctness ...")
     
     Dim CheckSAPAreaCorrectness As Integer: CheckSAPAreaCorrectness = 10000
@@ -121,7 +127,7 @@ Sub SAPAreaCorrectness()
         End If
     Next C
     
-    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
+    ActiveSheet.Range("$A$1:$BH$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
     
     ActiveWindow.ScrollRow = 1
     ActiveWindow.ScrollColumn = 1
@@ -130,6 +136,8 @@ Sub SAPAreaCorrectness()
     Call StopMacroShowMessage
 End Sub
 Sub SLACheckLayout()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
 
     Call BackToNormal
     
@@ -169,5 +177,3 @@ Sub SLACheckLayout()
     ActiveWindow.ScrollRow = 1
     Range("A1").Select
 End Sub
-
-
