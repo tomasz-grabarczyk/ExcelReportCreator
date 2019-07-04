@@ -1,4 +1,7 @@
 Sub RunCounter()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Call StartMacroShowMessage(35)
     
     Sheets("DeveloperCounter").Visible = True
@@ -134,8 +137,8 @@ Sub RunCounter()
 
 End Sub
 Sub HideCounter()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Sheets("DeveloperCounter").Visible = False
 End Sub
-
-
-
