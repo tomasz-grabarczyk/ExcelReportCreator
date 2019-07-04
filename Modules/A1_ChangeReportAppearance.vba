@@ -1,4 +1,7 @@
 Sub PaintAllTickets()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Call StartMacroShowMessage(3)
     
     Call BackToNormal
@@ -63,8 +66,12 @@ Sub PaintAllTickets()
     Range("A1").Select
     
     Call StopMacroShowMessage
+
 End Sub
 Sub ClearIrrelevantData()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Call StartMacroShowMessage(5)
     
     Sheets("Sheet1").Select
@@ -101,7 +108,9 @@ Sub ClearIrrelevantData()
     Call StopMacroShowMessage
 End Sub
 Sub SortByStatuses()
-
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Sheets("Sheet1").Select
     
     'Sort statuses by: Assigned -> In Progress -> Pending -> Resolved -> Closed -> Cancelled
@@ -118,11 +127,18 @@ Sub SortByStatuses()
 
 End Sub
 Sub BackToNormal()
-    Dim ws As Worksheet
-    'Clear conditional formating in entire sheet
-    For Each ws In ThisWorkbook.Worksheets
-        ws.Cells.FormatConditions.Delete
-    Next ws
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
+    Application.ScreenUpdating = False
+    
+    Sheets("Sheet1").Select
+    Cells.FormatConditions.Delete
+    Sheets("PendingCalculator").Select
+    Cells.FormatConditions.Delete
+    
+    Application.ScreenUpdating = True
+    
 
     Sheets("Sheet1").Select
     Sheet1.AutoFilterMode = False
@@ -147,10 +163,10 @@ Sub BackToNormal()
     Selection.EntireColumn.Hidden = True
     Columns("AJ:AK").Select
     Selection.EntireColumn.Hidden = True
+    Columns("BH:BH").Select
+    Selection.EntireColumn.Hidden = True
     
     Rows("1:1").AutoFilter
     Range("A1").Select
-    
    
 End Sub
-
