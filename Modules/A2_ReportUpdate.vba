@@ -1,13 +1,17 @@
 Sub UpdateReport()
-
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     ChDir "C:\Users\" & Environ$("Username") & "\Downloads"
 
     Call RunVLookUpsUpdatedReport("ArdaghDailyUpdateReport.xls")
     
     Call ScrollMaxUpAndLeft
 End Sub
-
 Sub AddNewTicket()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Sheets("Sheet1").Select
     Rows("2:2").Select
     Selection.Copy
@@ -18,6 +22,9 @@ Sub AddNewTicket()
     Range("K2:O2").ClearContents
 End Sub
 Sub RemoveFirstRow()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Sheets("Sheet1").Select
     If Range("C2") = "" Then
         Rows("2:2").Delete Shift:=xlUp
@@ -26,6 +33,8 @@ Sub RemoveFirstRow()
     End If
 End Sub
 Sub ResolvedIntoValues()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
 
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
@@ -57,5 +66,3 @@ Sub ResolvedIntoValues()
     
     Range("A1").Select
 End Sub
-
-
