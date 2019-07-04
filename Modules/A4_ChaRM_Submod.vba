@@ -1,4 +1,42 @@
+Sub HideColumnsForChaRM()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
+    Columns("A:B").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("D:E").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("G:AX").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("BC:BD").Select
+        Selection.EntireColumn.Hidden = True
+    Columns("BF:BG").Select
+        Selection.EntireColumn.Hidden = True
+
+    ActiveSheet.Range("$A$1:$BH$10000").AutoFilter Field:=6, Criteria1:=Array( _
+                                                                                "Assigned", _
+                                                                                "In Progress", _
+                                                                                "Pending" _
+                                                                                ), Operator:=xlFilterValues
+    Dim ticketNumbersToColor As Long: ticketNumbersToColor = Cells(Rows.Count, 3).End(xlUp).Row
+    
+    For colorIterator = 2 To ticketNumbersToColor
+        If Not Range("BA" & colorIterator).Value = "" Or Not Range("BB" & colorIterator).Value = "" Then
+            Range("C" & colorIterator).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next colorIterator
+    
+    Call FilterIncidentNumbersByColor
+    
+End Sub
 Sub CompareStringsRfC()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     If (ActiveCell.Value = "Created" Or ActiveCell.Value = "In Preparation" Or ActiveCell.Value = "Tech. Specification Request") Then
         If Not (ActiveCell.Offset(0, -45).Value = "Assigned" Or ActiveCell.Offset(0, -45).Value = "In Progress") Then
             ActiveCell.Offset(0, 2).Value = "In Progress"
@@ -24,6 +62,9 @@ Sub CompareStringsRfC()
     End If
 End Sub
 Sub CompareStringsCD()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     If (ActiveCell.Value = "Created" Or ActiveCell.Value = "In development" Or ActiveCell.Value = "To be tested in PreProd") Then
         If Not (ActiveCell.Offset(0, -46).Value = "Assigned" Or ActiveCell.Offset(0, -46).Value = "In Progress") Then
             ActiveCell.Offset(0, 2).Value = "In Progress"
@@ -49,6 +90,9 @@ Sub CompareStringsCD()
     End If
 End Sub
 Sub launchCharmStatusesCheck(cellRange As String, copyToCell As String, columnsToBeDeleted As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     If (Worksheets("PendingCalculator").Range("Q16") = "Tomasz Grabarczyk") Then
         Call runCharmStatuses("C:\Users\A702387\Downloads\export.csv", 45, cellRange, copyToCell, columnsToBeDeleted)
     ElseIf (Worksheets("PendingCalculator").Range("Q16") = "Adam Rusnak") Then
@@ -56,6 +100,8 @@ Sub launchCharmStatusesCheck(cellRange As String, copyToCell As String, columnsT
     End If
 End Sub
 Sub convertColumnToNumbers(convertColumn As String, cellRange As String, startFromCell As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
  
     Dim SelectR As Range
     Dim sht As Worksheet
@@ -74,6 +120,8 @@ Sub convertColumnToNumbers(convertColumn As String, cellRange As String, startFr
         
 End Sub
 Sub LoadChaRMDataFromFilesBackend(filePath As String, copyToCell As String, sheetName As String, stopOnColumn As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
     
     If Dir(filePath) = "" Then
         MsgBox "Could not find the file: " & filePath
@@ -136,12 +184,18 @@ Sub LoadChaRMDataFromFilesBackend(filePath As String, copyToCell As String, shee
     Sheets(sheetName).Visible = False
 End Sub
 Sub CopyDataFromRfCAndCDToChaRMSheetBackend(sheetName As String, letterOfColumn As String, copyToCell As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+        
     Sheets(sheetName).Select
     Range(letterOfColumn & "2:" & letterOfColumn & "1000").Copy
     Sheets("ChaRM").Select
     Range(copyToCell).PasteSpecial xlPasteValues
 End Sub
 Sub CopyDataFromRfCAndCDToChaRMSheet()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Sheets("ChaRM").Visible = True
     Sheets("ChaRM").Select
     Range("A2:F1000").ClearContents
@@ -175,6 +229,9 @@ Sub CopyDataFromRfCAndCDToChaRMSheet()
     Sheets("ChaRM CD").Visible = False
 End Sub
 Sub RemoveMultipleOccurencesOfTickets()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Dim RfCNumberOfTickets As Long: RfCNumberOfTickets = Cells(Rows.Count, 1).End(xlUp).Row
     Dim CDNumberOfTickets As Long: CDNumberOfTickets = Cells(Rows.Count, 4).End(xlUp).Row
     
@@ -199,4 +256,3 @@ Sub RemoveMultipleOccurencesOfTickets()
     
     Sheets("ChaRM").Visible = False
 End Sub
-
