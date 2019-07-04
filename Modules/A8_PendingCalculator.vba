@@ -1,4 +1,7 @@
 Sub RunPendings()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Call StartMacroShowMessage(3)
     
     Sheets("PendingCalculator").Select
@@ -69,6 +72,9 @@ Sub RunPendings()
     Call StopMacroShowMessage
 End Sub
 Sub ResolutionTime()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Dim FindString As String
     Dim rng As Range
     FindString = Range("U4").Value
@@ -109,6 +115,9 @@ Sub ResolutionTime()
     Sheets("Sheet1").Select
 End Sub
 Sub ClearPendingCalculator()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Sheets("PendingCalculator").Select
     
     Range("A22:E22").AutoFilter
@@ -131,6 +140,9 @@ Sub ClearPendingCalculator()
     Range("A22").Select
 End Sub
 Sub RoundPendingDown()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Range("G7").Value = Application.WorksheetFunction.RoundDown(Range("G4").Value / 10, 0)
     Call PendingTimeCopyToMainSheet
 End Sub
