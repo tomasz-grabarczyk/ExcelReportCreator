@@ -1,4 +1,7 @@
 Sub RunLoadDataForDevelopers()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     ChDir "C:\Users\" & Environ$("Username") & "\Downloads"
     
     Call subLoadDataForDevelopers("DevCounterPrzPaw.xls", "A2")
@@ -8,8 +11,23 @@ Sub RunLoadDataForDevelopers()
     Call subLoadDataForDevelopers("DevCounterJanZat.xls", "E2")
     Call subLoadDataForDevelopers("DevCounterPawZel.xls", "F2")
     
+    'NNN - 3 letters of name / SSS - 3 letters of surname
+    'e.g. Tomasz Grabarczyk: NNN = Tom / SSS - Gra
+    
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "G2")
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "H2")
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "I2")
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "J2")
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "K2")
+    
+    'System accepts developers up to K column.
+    'If more is needed changes are to be made in DeveloperCounterBackend sheet as well as 'copyToColumn' Sub.
+    'Call subLoadDataForDevelopers("DevCounterNNNSSS.xls", "e.g. L2")
+    
 End Sub
 Sub subLoadDataForDevelopers(filePath As String, pasteToCell As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
 
     Sheets("DeveloperCounterBackend").Select
     
@@ -48,6 +66,9 @@ Sub subLoadDataForDevelopers(filePath As String, pasteToCell As String)
     End If
 End Sub
 Sub RemoveBlanks(copyFromColumnNumber As Variant, CopyToColumnNumber As Variant)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     counter = 0
     'Remove blanks from cells 1 to 1000
     For iterator = 2 To 1000
@@ -58,6 +79,9 @@ Sub RemoveBlanks(copyFromColumnNumber As Variant, CopyToColumnNumber As Variant)
     Next iterator
 End Sub
 Sub FindTicketsWithMultipleDevelopers(developerColumn As Variant, copyToColumn As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     For clmnNumber = 0 To Application.CountA(developerColumn) - 1
         For i = 2 To 1000
             If Not Range(developerColumn(clmnNumber) & i).Value = "" Then
@@ -67,6 +91,9 @@ Sub FindTicketsWithMultipleDevelopers(developerColumn As Variant, copyToColumn A
     Next clmnNumber
 End Sub
 Sub copyToColumn(copyFromColumn As Variant, sheetName As String, columnNumber As Integer, pasteToColumn As Variant)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     For j = 1 To 1000
         Sheets("DeveloperCounterBackend").Select
         If Not Range(copyFromColumn & j).Value = "" Then
@@ -101,6 +128,9 @@ Sub copyToColumn(copyFromColumn As Variant, sheetName As String, columnNumber As
                 Range(ActiveCell.Address).Offset(0, -1).Value = Sheets("DeveloperCounterBackend").Range("J1").Value
             ElseIf copyFromColumn = "KM" And sheetName = "DeveloperCounter" Then
                 Range(ActiveCell.Address).Offset(0, -1).Value = Sheets("DeveloperCounterBackend").Range("K1").Value
+            'Adding new developer after making changes in DeveloperCounterBackend tab:
+            'ElseIf copyFromColumn = "e.g. LM" And sheetName = "DeveloperCounter" Then
+                'Range(ActiveCell.Address).Offset(0, -1).Value = Sheets("DeveloperCounterBackend").Range("e.g. L1").Value
             ElseIf copyFromColumn = "AA" And sheetName = "DeveloperCounter" Then
                 Range(ActiveCell.Address).Offset(0, -1).Value = "Multiple Developers"
                 Range(ActiveCell.Address).Offset(0, -1).Font.ColorIndex = 3
@@ -110,7 +140,9 @@ Sub copyToColumn(copyFromColumn As Variant, sheetName As String, columnNumber As
     Next j
 End Sub
 Sub RemoveDuplicatesFromTickets(columnLetter As Variant)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Columns(columnLetter & ":" & columnLetter).Select
     ActiveSheet.Range(columnLetter & "1:" & columnLetter & "1000").RemoveDuplicates Columns:=1, Header:=xlNo
 End Sub
-
