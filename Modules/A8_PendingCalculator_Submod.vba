@@ -1,4 +1,6 @@
 Sub pendingCalculatorCopyTodaysDate()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
     
     Range("C4").Value = Format(Now(), "DD.MM.YYYY HH:MM:SS")
     Range("C4").Replace "-", "/"
@@ -24,6 +26,9 @@ Sub pendingCalculatorCopyTodaysDate()
     Call pendingCalculatorSortDates
 End Sub
 Sub PendingTimeCopyToMainSheet()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Dim FindString As String
     Dim rng As Range
     FindString = Range("U4").Value
@@ -61,6 +66,8 @@ Sub PendingTimeCopyToMainSheet()
     Sheets("Sheet1").Select
 End Sub
 Sub pendingCalculatorSortDates()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
     
     ActiveSheet.Range("$A$21:$E$500").AutoFilter Field:=1, Criteria1:= _
         "Status has been changed to Pending"
@@ -138,6 +145,9 @@ Sub pendingCalculatorSortDates()
     Range("G4").Select
 End Sub
 Sub copyTicketNumber(ticketNumber As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+
     Sheets("PendingCalculator").Select
     Range("U4").Value = ticketNumber
     Sheets("NewChecker").Select
