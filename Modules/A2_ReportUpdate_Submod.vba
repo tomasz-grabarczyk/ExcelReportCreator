@@ -1,4 +1,7 @@
 Sub LaunchCheckerFileUploadBackend(filePath As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
+    
     Call StartMacroShowMessageString("Adding new tickets ...")
     
     Worksheets("NewCheckerUpdated").Visible = True
@@ -72,6 +75,8 @@ Sub LaunchCheckerFileUploadBackend(filePath As String)
     Call StopMacroShowMessage
 End Sub
 Sub CompareAllTickets()
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
     
     'Consultants to filter by:
     Sheets("Sheet1").Select
@@ -128,6 +133,8 @@ Sub CompareAllTickets()
     
 End Sub
 Sub RunVLookUpsUpdatedReport(filePath As String)
+    '********** Author: Tomasz Grabarczyk **********
+    '**********  Last update: 03.07.2019  **********
 
     If Dir(filePath) = "" Then
             MsgBox "Could not find the file: " & filePath
