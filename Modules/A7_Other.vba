@@ -2,16 +2,25 @@ Sub SaveToMotherFile()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
 
-    If Environ$("Username") = "A702387" Then
-        Call SaveToMotherFileBackend( _
-                                    "https://atos365-my.sharepoint.com/personal/tomasz_grabarczyk_atos_net/Documents/AMS_ARDAGH/AMS_ARDAGH.xlsm", _
-                                    "C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH")
-    ElseIf Environ$("Username") = "A700473" Then
-        Call SaveToMotherFileBackend( _
-                                    "https://atos365-my.sharepoint.com/personal/tomasz_grabarczyk_atos_net/Documents/AMS_ARDAGH/AMS_ARDAGH.xlsm", _
-                                    "C:\Users\A700473\Atos\Grabarczyk, Tomasz - AMS_ARDAGH (3)")
-    
+    ActiveWorkbook.Save
+
+    If Len(Dir("C:\Users\" & Environ$("Username") & "\Downloads\!AMS_ARDAGH", vbDirectory)) = 0 Then
+        MkDir ("C:\Users\" & Environ$("Username") & "\Downloads\!AMS_ARDAGH")
     End If
+    
+    ChDir "C:\Users\" & Environ$("Username") & "\Downloads\!AMS_ARDAGH"
+    ActiveWorkbook.SaveAs fileName:="AMS_ARDAGH.xlsm"
+    
+    Sheets("Sheet1").Select
+
+    Range("A2:AZ10000").Copy
+    Range("A2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    
+    ActiveWorkbook.Save
+    
+    Application.Quit
+                         
 End Sub
 Sub DefaultLayout()
     '********** Author: Tomasz Grabarczyk **********
