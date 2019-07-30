@@ -74,10 +74,6 @@
 					<mso:button id="BTN_ATOS_DD_09_03" label="Clear Pending Calculator" imageMso="TableStyleClear" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!pendingCalculatorClear" visible="true"/>
 					<mso:button id="BTN_ATOS_DD_09_04" label="Round Pending Down" imageMso="OutlineMoveDown" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!roundPending" visible="true"/>
 				</mso:group>
-				<mso:group id="ATOS_DD_10" label="Working Now" autoScale="true">
-					<mso:button id="BTN_ATOS_DD_10_01" label="Tomasz Grabarczyk" imageMso="MailSelectNames" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!TomaszGrabarczykEditing" visible="true"/>
-					<mso:button id="BTN_ATOS_DD_10_02" label="Adam Rusnak" imageMso="MailSelectNames" onAction="C:\Users\A702387\OneDrive - Atos\AMS_ARDAGH\AMS_ARDAGH_MACROS\AMS_ARDAGH_DD_MACROS.xlam!AdamRusnakEditing" visible="true"/>
-				</mso:group>
 			</mso:tab>
 		</mso:tabs>
 	</mso:ribbon>
