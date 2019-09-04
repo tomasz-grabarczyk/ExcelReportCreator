@@ -6,7 +6,10 @@ Sub RunPendings()
     
     Sheets("PendingCalculator").Select
     Range("A22").Select
-    ActiveSheet.Paste ' wykomentowac w razie problemu z pending calc
+    
+    If Range("U10") = "Automatic" Then
+        ActiveSheet.Paste
+    End If
     
     ActiveSheet.Range("$A$21:$E$500").AutoFilter Field:=1, Criteria1:="<>Status has been changed to*"
     ActiveSheet.Range("$A$22:$E$500").ClearContents
@@ -30,7 +33,7 @@ Sub RunPendings()
         Call ClearPendingCalculator
     Else
         Dim lastRowWithValue As Long
-        lastRowWithValue = Cells(Rows.Count, 1).End(xlUp).Row
+        lastRowWithValue = Cells(Rows.count, 1).End(xlUp).Row
     
         For i = lastRowWithValue To 21 Step -1
             cellRangeValue = Range("A" & i).Address
@@ -47,7 +50,7 @@ Sub RunPendings()
             Call pendingCalculatorCopyTodaysDate
             
             Dim lastRowWithValueAfter As Long
-            lastRowWithValueAfter = Cells(Rows.Count, 1).End(xlUp).Row
+            lastRowWithValueAfter = Cells(Rows.count, 1).End(xlUp).Row
             Range("A" & lastRowWithValueAfter).Select
         End If
             
@@ -69,6 +72,8 @@ Sub RunPendings()
         Call pendingCalculatorSortDates
     End If
     
+    Sheets("PendingCalculator").Range("U10").Value = "Automatic"
+    
     Call StopMacroShowMessage
 End Sub
 Sub ResolutionTime()
@@ -82,7 +87,7 @@ Sub ResolutionTime()
     If Trim(FindString) <> "" Then
         With Sheets("Sheet1").Range("C:C")
             Set rng = .Find(What:=FindString, _
-                            After:=.Cells(.Cells.Count), _
+                            After:=.Cells(.Cells.count), _
                             LookIn:=xlValues, _
                             LookAt:=xlWhole, _
                             SearchOrder:=xlByRows, _
