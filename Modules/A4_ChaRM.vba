@@ -5,8 +5,8 @@ Sub LoadChaRMInformation()
     Call StartMacroShowMessage(6)
     
     ChDir "C:\Users\" & Environ$("Username") & "\Downloads"
-    Call LoadChaRMDataFromFilesBackend("rfc.csv", "A1", "ChaRM RfC", "Z")
-    Call LoadChaRMDataFromFilesBackend("cd.csv", "A1", "ChaRM CD", "V")
+    Call LoadChaRMDataFromFilesBackend("rfc.csv", "A1", "RfC", "Z")
+    Call LoadChaRMDataFromFilesBackend("cd.csv", "A1", "CD", "V")
     
     Call CopyDataFromRfCAndCDToChaRMSheet
     Call RemoveMultipleOccurencesOfTickets
@@ -18,7 +18,7 @@ Sub CheckChaRMStatuses()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
     
-    Dim lRow As Long: lRow = Cells(Rows.Count, 3).End(xlUp).Row
+    Dim lRow As Long: lRow = Cells(Rows.count, 3).End(xlUp).Row
     
     Call StartMacroShowMessage(6)
       
