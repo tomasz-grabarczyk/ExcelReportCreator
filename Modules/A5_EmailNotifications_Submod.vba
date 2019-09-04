@@ -38,6 +38,9 @@ Sub DailyTranportsBackend(filePath As String, cellRange As String, copyToCell As
     End If
     
     Sheets("DailyTransports").Select
+    
+    Columns("A:K").EntireColumn.AutoFit
+    
     Range("A1").Select
 End Sub
 Sub SortData()
@@ -81,7 +84,7 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Sheets("ReportCreator").Visible = True
     
     Sheets("ReportCreator").Select
-    Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(1, 0).Select
     
     Sheets("Sheet1").Select
     Columns("A:A").EntireColumn.Hidden = True
@@ -91,8 +94,11 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Columns("AF:AV").EntireColumn.Hidden = True
     
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Assigned"
+    
+    ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=2, Criteria1:="User Service Restoration"
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=4, Criteria1:=Array(area, area_second, area_third, area_fourth), Operator:=xlFilterValues
+    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Assigned"
+    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=38, Criteria1:=">=" & 11
     
     Call SortData
     
@@ -101,19 +107,21 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Sheets("ReportCreator").Paste
     
 
-    Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).Value = "IN PROGRESS"
     Call FormatText
     
     
     Range("A3:I3").Copy
-    Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).PasteSpecial
-    Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(1, 0).Select
     
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="In Progress"
+    ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=2, Criteria1:="User Service Restoration"
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=4, Criteria1:=Array(area, area_second, area_third, area_fourth), Operator:=xlFilterValues
+    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="In Progress"
+    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=38, Criteria1:=">=" & 11
     
     Call SortData
     
@@ -121,18 +129,20 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Sheets("ReportCreator").Select
     Sheets("ReportCreator").Paste
     
-    Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).Value = "PENDING"
     Call FormatText
     
     Range("A3:I3").Copy
-    Cells(Rows.Count, 1).End(xlUp).Offset(2, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(2, 0).Select
     Range(ActiveCell.Address).PasteSpecial
-    Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Select
+    Cells(Rows.count, 1).End(xlUp).Offset(1, 0).Select
     
     Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Pending"
+    ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=2, Criteria1:="User Service Restoration"
     ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=4, Criteria1:=Array(area, area_second, area_third, area_fourth), Operator:=xlFilterValues
+    ActiveSheet.Range("$A$1:$AW$10000").AutoFilter Field:=6, Criteria1:="Pending"
+    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=38, Criteria1:=">=" & 11
     
     Call SortData
     
@@ -146,7 +156,7 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Columns("I:I").Select
     Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlBetween, _
         Formula1:="=0", Formula2:="=5"
-    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    Selection.FormatConditions(Selection.FormatConditions.count).SetFirstPriority
     With Selection.FormatConditions(1).Font
         .Color = -16754788
         .TintAndShade = 0
@@ -159,7 +169,7 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     Selection.FormatConditions(1).StopIfTrue = False
     Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, _
         Formula1:="=0"
-    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    Selection.FormatConditions(Selection.FormatConditions.count).SetFirstPriority
     With Selection.FormatConditions(1).Font
         .Color = -16383844
         .TintAndShade = 0
@@ -171,11 +181,28 @@ Sub MacroListOfAllTickets(ByVal area As String, Optional ByVal area_second As St
     End With
     Selection.FormatConditions(1).StopIfTrue = False
     Application.CutCopyMode = False
+    
+    'SLA Breached - paint red
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlEqual, _
+        Formula1:="=""SLA BREACHED"""
+    Selection.FormatConditions(Selection.FormatConditions.count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -16383844
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 13551615
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
   
     With ActiveSheet.Range("I1:I300")           ' removes formatting from empty cells
     .SpecialCells(xlCellTypeBlanks).ClearFormats
     End With
     
+    Columns("A:I").EntireColumn.AutoFit
+        
     Call SortByStatuses
     
     Sheets("ReportCreator").Select
