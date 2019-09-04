@@ -123,7 +123,7 @@ Sub RunCounter()
     
     For i = 0 To 1000
         Dim lastBlankRow As Long
-        lastBlankRow = Cells(Rows.Count, 3).End(xlUp).Row
+        lastBlankRow = Cells(Rows.count, 3).End(xlUp).Row
         If Not Range("C" & lastBlankRow + 1).Offset(0, -1) = "" Then
             Range("C2:L2").Copy
             Range("C" & lastBlankRow + 1).PasteSpecial xlPasteFormulas
@@ -133,6 +133,8 @@ Sub RunCounter()
     Range("A2").Select
     Sheets("DeveloperCounterBackend").Visible = False
     
+    Sheets("MultipleDevelopers").Visible = True
+    
     Call StopMacroShowMessage
 
 End Sub
@@ -141,4 +143,5 @@ Sub HideCounter()
     '**********  Last update: 03.07.2019  **********
 
     Sheets("DeveloperCounter").Visible = False
+    Sheets("MultipleDevelopers").Visible = False
 End Sub
