@@ -102,7 +102,7 @@ Sub copyToColumn(copyFromColumn As Variant, sheetName As String, columnNumber As
             Sheets(sheetName).Select
             
             Dim lRow As Long
-            lRow = Cells(Rows.Count, columnNumber).End(xlUp).Row
+            lRow = Cells(Rows.count, columnNumber).End(xlUp).Row
             
             Range(pasteToColumn & lRow + 1).PasteSpecial Paste:=xlPasteValues
             
