@@ -18,7 +18,7 @@ Sub HideColumnsForChaRM()
                                                                                 "In Progress", _
                                                                                 "Pending" _
                                                                                 ), Operator:=xlFilterValues
-    Dim ticketNumbersToColor As Long: ticketNumbersToColor = Cells(Rows.Count, 3).End(xlUp).Row
+    Dim ticketNumbersToColor As Long: ticketNumbersToColor = Cells(Rows.count, 3).End(xlUp).Row
     
     For colorIterator = 2 To ticketNumbersToColor
         If Not Range("BA" & colorIterator).Value = "" Or Not Range("BB" & colorIterator).Value = "" Then
@@ -109,7 +109,7 @@ Sub convertColumnToNumbers(convertColumn As String, cellRange As String, startFr
     
     Set sht = Sheets("ChaRM")
     
-    LastRow = sht.Cells(sht.Rows.Count, convertColumn).End(xlUp).Row
+    LastRow = sht.Cells(sht.Rows.count, convertColumn).End(xlUp).Row
     
     Set SelectR = Sheets("ChaRM").Range(cellRange & LastRow)
     
@@ -159,10 +159,10 @@ Sub LoadChaRMDataFromFilesBackend(filePath As String, copyToCell As String, shee
     
     Sheets(sheetName).Select
     
-    If sheetName = "ChaRM RfC" Then
+    If sheetName = "RfC" Then
         For i = 0 To 1000
             Dim lastBlankRowRfC As Long
-            lastBlankRowRfC = Cells(Rows.Count, 27).End(xlUp).Row
+            lastBlankRowRfC = Cells(Rows.count, 27).End(xlUp).Row
             If Not Range("A" & lastBlankRowRfC + 1) = "" Then
                 Range("AA2:AD2").Copy
                 Range("AA" & lastBlankRowRfC + 1).PasteSpecial xlPasteFormulas
@@ -170,10 +170,10 @@ Sub LoadChaRMDataFromFilesBackend(filePath As String, copyToCell As String, shee
         Next i
     End If
     
-    If sheetName = "ChaRM CD" Then
+    If sheetName = "CD" Then
         For i = 0 To 1000
             Dim lastBlankRowCD As Long
-            lastBlankRowCD = Cells(Rows.Count, 23).End(xlUp).Row
+            lastBlankRowCD = Cells(Rows.count, 23).End(xlUp).Row
             If Not Range("A" & lastBlankRowCD + 1) = "" Then
                 Range("W2:Y2").Copy
                 Range("W" & lastBlankRowCD + 1).PasteSpecial xlPasteFormulas
@@ -200,15 +200,15 @@ Sub CopyDataFromRfCAndCDToChaRMSheet()
     Sheets("ChaRM").Select
     Range("A2:F1000").ClearContents
     
-    Sheets("ChaRM RfC").Visible = True
-    Sheets("ChaRM CD").Visible = True
+    Sheets("RfC").Visible = True
+    Sheets("CD").Visible = True
     
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM RfC", "T", "A2")
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM RfC", "E", "B2")
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM RfC", "U", "C2")
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM CD", "O", "D2")
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM CD", "I", "E2")
-    Call CopyDataFromRfCAndCDToChaRMSheetBackend("ChaRM CD", "Q", "F2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("RfC", "T", "A2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("RfC", "E", "B2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("RfC", "U", "C2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("CD", "O", "D2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("CD", "I", "E2")
+    Call CopyDataFromRfCAndCDToChaRMSheetBackend("CD", "Q", "F2")
     
     Call convertColumnToNumbers("C", "C2:C", "C2")
     Call convertColumnToNumbers("F", "F2:F", "F2")
@@ -225,18 +225,18 @@ Sub CopyDataFromRfCAndCDToChaRMSheet()
     Columns("G:H").Select
     Selection.EntireColumn.Hidden = True
     
-    Sheets("ChaRM RfC").Visible = False
-    Sheets("ChaRM CD").Visible = False
+    Sheets("RfC").Visible = False
+    Sheets("CD").Visible = False
 End Sub
 Sub RemoveMultipleOccurencesOfTickets()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
     
-    Dim RfCNumberOfTickets As Long: RfCNumberOfTickets = Cells(Rows.Count, 1).End(xlUp).Row
-    Dim CDNumberOfTickets As Long: CDNumberOfTickets = Cells(Rows.Count, 4).End(xlUp).Row
+    Dim RfCNumberOfTickets As Long: RfCNumberOfTickets = Cells(Rows.count, 1).End(xlUp).Row
+    Dim CDNumberOfTickets As Long: CDNumberOfTickets = Cells(Rows.count, 4).End(xlUp).Row
     
-    Dim RfCMultipleTicketNo As Long: RfCMultipleTicketNo = Cells(Rows.Count, 9).End(xlUp).Row
-    Dim CDMultipleTicketNo As Long: CDMultipleTicketNo = Cells(Rows.Count, 11).End(xlUp).Row
+    Dim RfCMultipleTicketNo As Long: RfCMultipleTicketNo = Cells(Rows.count, 9).End(xlUp).Row
+    Dim CDMultipleTicketNo As Long: CDMultipleTicketNo = Cells(Rows.count, 11).End(xlUp).Row
     
     For RfCMultipleIterator = 2 To RfCMultipleTicketNo
         For RfCNumberOfTicketsIterator = 2 To RfCNumberOfTickets
