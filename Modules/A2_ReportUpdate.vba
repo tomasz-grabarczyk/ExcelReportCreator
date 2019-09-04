@@ -2,6 +2,8 @@ Sub UpdateReport()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
     
+    Call BackToNormal
+    
     ChDir "C:\Users\" & Environ$("Username") & "\Downloads"
 
     Call RunVLookUpsUpdatedReport("ArdaghDailyUpdateReport.xls")
@@ -56,8 +58,8 @@ Sub ResolvedIntoValues()
         End If
     Next cell
     
-    'Select all column from A to BG
-    Range("A2:BG" & numberOfResolvedTickets).Select
+    'Select all column from A to CA
+    Range("A2:CA" & numberOfResolvedTickets).Select
     
     Selection.Copy
     Selection.PasteSpecial xlPasteValues
