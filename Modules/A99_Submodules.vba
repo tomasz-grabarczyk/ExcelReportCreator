@@ -14,7 +14,7 @@ Sub FindLastRowWithData(columnNumber As Variant)
     Dim lRow As Long
     
     'Find the last non-blank cell in column A(1)
-    lRow = Cells(Rows.Count, columnNumber).End(xlUp).Row
+    lRow = Cells(Rows.count, columnNumber).End(xlUp).Row
     
     MsgBox "Last Row: " & lRow
 End Sub
