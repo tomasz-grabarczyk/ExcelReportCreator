@@ -2,6 +2,8 @@ Sub CheckDates()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
     
+    Call BackToNormal
+    
     Call StartMacroShowMessage(2)
         
     Columns("A:B").Select
@@ -100,6 +102,8 @@ Sub SAPSystemCorrectness()
     '********** Author: Tomasz Grabarczyk **********
     '**********  Last update: 03.07.2019  **********
     
+    Call BackToNormal
+        
     Call StartMacroShowMessageString("checking SAP Area correctness ...")
     
     Dim CheckSAPSystemCorrectness As Integer: CheckSAPSystemCorrectness = 10000
@@ -135,49 +139,10 @@ Sub SAPSystemCorrectness()
     
     Call StopMacroShowMessage
 End Sub
-Sub SLACheckLayout()
-    '********** Author: Tomasz Grabarczyk **********
-    '**********  Last update: 03.07.2019  **********
-
-    Call BackToNormal
-    
-    Sheets("Sheet1").Select
-    
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=6, Criteria1:=Array( _
-        "Assigned", _
-        "In Progress", _
-        "Pending"), Operator:=xlFilterValues
-    
-    Columns("A:A").EntireColumn.Hidden = True
-    Columns("G:G").EntireColumn.Hidden = True
-    Columns("I:Y").EntireColumn.Hidden = True
-    Columns("AA:AD").EntireColumn.Hidden = True
-    Columns("AF:AM").EntireColumn.Hidden = True
-    Columns("AO:AV").EntireColumn.Hidden = True
-    Columns("AY:BG").EntireColumn.Hidden = True
-    
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=5
-    ActiveSheet.Range("$A$1:$AP$10000").AutoFilter Field:=38, Criteria1:=">=" & 11
-    
-    ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Add2 Key:= _
-        Range("AX1:AX10000"), SortOn:=xlSortOnValues, Order:=xlAscending, _
-        DataOption:=xlSortNormal
-    With ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort
-        .Header = xlYes
-        .MatchCase = False
-        .Orientation = xlTopToBottom
-        .SortMethod = xlPinYin
-        .Apply
-    End With
-    
-    Range("A1").Select
-    Sheets("Sheet1").Select
-    ActiveWindow.ScrollColumn = 1
-    ActiveWindow.ScrollRow = 1
-    Range("A1").Select
-End Sub
 Sub DeveloperStatusCheck()
+    
+    Call BackToNormal
+        
     Dim numberOfConsultants As Integer, developers() As String
     
     numberOfConsultants = 0
@@ -218,7 +183,7 @@ Sub DeveloperStatusCheck()
         ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=5, Criteria1:=Array(developers(i)), Operator:=xlFilterValues
         numberOfTickets = Application.WorksheetFunction.Subtotal(103, Range("A2:A10000"))
         For cellAdd = 1 To totalNumberOfTickets
-            If Range("E" & cellAdd) = developers(i) And Not (Range("E" & cellAdd).Offset(0, -1).Value = "Development" Or Range("E" & cellAdd).Offset(0, -1).Value = "Development Atos GDC") Then
+            If Range("E" & cellAdd) = developers(i) And Not (Range("E" & cellAdd).Offset(0, -1).Value = "Development" Or Range("E" & cellAdd).Offset(0, -1).Value = "Development Atos GDC" Or Range("E" & cellAdd).Offset(0, -1).Value = "Transport Management") Then
                 Range("C" & cellAdd).Select
                 With Selection.Interior
                     .Color = 16751001
@@ -228,19 +193,28 @@ Sub DeveloperStatusCheck()
         Next cellAdd
     Next i
     
-    'Check if ticket has In Progress Start Date and is not in Development
+    Call BackToNormal
+    
+    ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=6, Criteria1:=Array( _
+                    "Assigned", "In Progress", "Pending", "Resvoled"), Operator:=xlFilterValues
+                    
+    'Check if functional consultant has Development SAP Area
     For i = 1 To totalNumberOfTickets
-        If Not Range("L" & i).Value = "" And Range("F" & i) = "Assigned" And Not (Range("D" & i).Value = "Development" Or Range("D" & i).Value = "Development Atos GDC") Then
-            Range("C" & i).Select
-            With Selection.Interior
-                .Color = 16751001
-                .PatternTintAndShade = 0
-            End With
+        If (Range("D" & i).Value = "Development Atos GDC" Or Range("D" & i).Value = "Development") And Not ( _
+                                                                                                                 Range("E" & i) = developers(1) Or _
+                                                                                                                 Range("E" & i) = developers(2) Or _
+                                                                                                                 Range("E" & i) = developers(3) Or _
+                                                                                                                 Range("E" & i) = developers(4) Or _
+                                                                                                                 Range("E" & i) = developers(5) Or _
+                                                                                                                 Range("E" & i) = developers(6) _
+        ) Then
+          Range("C" & i).Select
+             With Selection.Interior
+                 .Color = 16751001
+                 .PatternTintAndShade = 0
+             End With
         End If
     Next i
-    
-    
-    Call BackToNormal
     
     ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
     
@@ -251,17 +225,15 @@ Sub DeveloperStatusCheck()
 End Sub
 Sub ClosedDateCheck()
     '********** Author: Tomasz Grabarczyk **********
-    '**********  Last update: 16.07.2019  **********
+    '**********  Last update: 02.08.2019  **********
 
-    Sheets("Sheet1").Select
-    ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=6, Criteria1:=Array( _
-                    "Closed", "Cancelled"), Operator:=xlFilterValues
+    Call BackToNormal
     
     Dim numberOfTickets As Long
     numberOfTickets = Application.WorksheetFunction.Subtotal(103, Range("A2:A10000"))
 
     For i = 1 To numberOfTickets
-        If (Range("F" & i) = "Closed" Or Range("F" & i) = "Cancelled") And (Range("N" & i) = "" Or Range("O" & i) = "") Then
+        If (Range("F" & i) = "Resolved" Or Range("F" & i) = "Closed" Or Range("F" & i) = "Cancelled") And (Range("N" & i) = "" Or Range("O" & i) = "") Then
             'Color Incident Numbers
             Range("C" & i).Select
             With Selection.Interior
@@ -271,6 +243,8 @@ Sub ClosedDateCheck()
         End If
     Next i
     
+    Call BackToNormal
+    
     ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
     
     ActiveWindow.ScrollRow = 1
@@ -278,72 +252,146 @@ Sub ClosedDateCheck()
     Range("A1").Select
     
 End Sub
-Sub TicketResolvingCounter()
+Sub DiscrepanciesCheck()
     '********** Author: Tomasz Grabarczyk **********
-    '**********  Last update: 17.07.2019  **********
+    '**********  Last update: 02.08.2019  **********
 
-    Dim DateToday As String, lRow As Long, numberOfTickets As String, arrayOfSAPArea() As String, arrayOfConsultant() As String, TotalTicketNumber() As String
-    
-    DateToday = Format(Range("A2").Value, "YYYY.MM.DD")
-    lRow = Cells(Rows.count, 3).End(xlUp).Row
-    
-    'Create dynamic array with size of total number of rows for SAP Area, Consultants and Total number of tickets
-    ReDim arrayOfSAPArea(lRow)
-    ReDim arrayOfConsultant(lRow)
-    ReDim TotalTicketNumber(lRow)
-    
-    'Copy SAP Areas and Consultants to an array
-    For i = 1 To lRow - 1
-        arrayOfSAPArea(i) = Sheets("TicketResolving").Range("B" & i + 1)
-        arrayOfConsultant(i) = Sheets("TicketResolving").Range("C" & i + 1)
+    Call BackToNormal
+
+    Dim numberOfTickets As Long
+    numberOfTickets = Application.WorksheetFunction.Subtotal(103, Range("A2:A10000"))
+
+    'Check if "Priority - J" is present in closed tickets
+    For i = 1 To numberOfTickets
+        If (Range("F" & i) = "Resolved" Or Range("F" & i) = "Closed" Or Range("F" & i) = "Cancelled") And Range("J" & i) = "" Then
+            Range("J" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
     Next i
-
-    For loopNumber = 0 To 2
-        Application.ScreenUpdating = False
-        
-        For j = 1 To lRow - 1
-            Sheets("Sheet1").Select
-            ActiveWorkbook.Worksheets("Sheet1").AutoFilter.Sort.SortFields.Clear
-            
-            If arrayOfSAPArea(j) = "Logistics" Then
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=4, Criteria1:="=*Logistic*"
-            Else
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=4, Criteria1:=arrayOfSAPArea(j)
-            End If
-            
-            ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=5, Criteria1:=arrayOfConsultant(j)
-            
-            If loopNumber = 0 Then
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=6, Criteria1:=Array( _
-                    "Assigned", "In Progress", "Pending"), Operator:=xlFilterValues
-            ElseIf loopNumber = 1 Then
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=6, Criteria1:="Resolved"
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=14, Criteria1:="=*" & DateToday & "*", Operator:=xlAnd
-            ElseIf loopNumber = 2 Then
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=6, Criteria1:=Array( _
-                    "Assigned", "In Progress", "Pending", "Resolved"), Operator:=xlFilterValues
-                ActiveSheet.Range("$A$1:$CA$10000").AutoFilter Field:=11, Criteria1:="=*" & DateToday & "*", Operator:=xlAnd
-            End If
-            
-            numberOfTickets = Application.WorksheetFunction.Subtotal(103, Range("A2:A10000"))
-            TotalTicketNumber(j) = numberOfTickets
-        Next j
-        
-        For k = 1 To lRow
-            If loopNumber = 0 Then
-                Sheets("TicketResolving").Range("D" & k + 1).Value = TotalTicketNumber(k)
-            ElseIf loopNumber = 1 Then
-                Sheets("TicketResolving").Range("E" & k + 1).Value = TotalTicketNumber(k)
-            ElseIf loopNumber = 2 Then
-                Sheets("TicketResolving").Range("F" & k + 1).Value = TotalTicketNumber(k)
-            End If
-        Next k
-        
-        Application.Run ("'AMS_ARDAGH_DD_MACROS.xlam'!BackToNormal")
-        
-        Application.ScreenUpdating = True
-    Next loopNumber
     
-    Sheets("TicketResolving").Select
+    'Check if "SLA Resolution Time (days) - AC" is present in closed tickets
+    For i = 1 To numberOfTickets
+        If (Range("F" & i) = "Resolved" Or Range("F" & i) = "Closed" Or Range("F" & i) = "Cancelled") And Range("AC" & i) = "" Then
+            Range("AC" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+    
+    'Check if ticket in "ARD SAP AMS" has empty "SAP Area - D"
+    For i = 1 To numberOfTickets
+        If Range("A" & i) = "ARD SAP AMS" And (Range("D" & i) = "" Or Range("E" & i) = "N/A") Then
+            Range("D" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+    
+    'Check if ticket has In Progress Start Date and is not in Development
+    For i = 1 To numberOfTickets
+        If Not Range("L" & i).Value = "" And Range("F" & i) = "Assigned" And Not (Range("D" & i).Value = "Development" Or Range("D" & i).Value = "Development Atos GDC") Then
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+    
+    'Check if ticket on Pending status has empty "Status Reason - G"
+    For i = 1 To numberOfTickets
+        If Range("F" & i) = "Pending" And (Range("G" & i) = "") Then
+            Range("G" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+    
+    'Check if ticket on Pending status has empty "Reason of Pending Status - AI"
+    For i = 1 To numberOfTickets
+        If Range("F" & i) = "Pending" And (Range("AI" & i) = "") Then
+            Range("AI" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+    
+    'Check if ticket should have Ticket Type changed
+    For i = 1 To numberOfTickets
+        If Range("F" & i) <> "Closed" And Range("D" & i) = "Monitoring" And (Range("B" & i) = "User Service Restoration") Then
+            Range("B" & i).Select
+            With Selection.Interior
+                .Color = 13260
+                .PatternTintAndShade = 0
+            End With
+            'Color Incident Numbers
+            Range("C" & i).Select
+            With Selection.Interior
+                .Color = 16751001
+                .PatternTintAndShade = 0
+            End With
+        End If
+    Next i
+    
+    Call BackToNormal
+
+
+    ActiveSheet.Range("$A$1:$BG$10000").AutoFilter Field:=3, Criteria1:=RGB(153, 153, 255), Operator:=xlFilterCellColor
+    
+    ActiveWindow.ScrollRow = 1
+    ActiveWindow.ScrollColumn = 1
+    Range("A1").Select
     
 End Sub
