@@ -8,7 +8,7 @@ Sub PaintAllTickets()
     Sheets("Sheet1").Select
     
     'Count number of rows with values
-    Dim lastRowStatus As Long: lastRowStatus = Cells(Rows.Count, 3).End(xlUp).Row
+    Dim lastRowStatus As Long: lastRowStatus = Cells(Rows.count, 3).End(xlUp).Row
     
     'Paint Resolved statuses
     ActiveSheet.Range("$A$1:$BG$" & lastRowStatus).AutoFilter Field:=6, Criteria1:="Resolved"
@@ -152,7 +152,7 @@ Sub BackToNormal()
     
     ActiveWindow.ScrollColumn = 1
     ActiveWindow.ScrollRow = 1
-    
+    ' hiding columns
     Columns("AQ:AV").Select
     Selection.EntireColumn.Hidden = True
     Columns("P:Q").Select
@@ -163,7 +163,8 @@ Sub BackToNormal()
     Selection.EntireColumn.Hidden = True
     Columns("AJ:AK").Select
     Selection.EntireColumn.Hidden = True
-    Columns("BH:BH").Select
+    ' hides columns from BH to CA
+    Columns("BH:CA").Select
     Selection.EntireColumn.Hidden = True
     
     Rows("1:1").AutoFilter
