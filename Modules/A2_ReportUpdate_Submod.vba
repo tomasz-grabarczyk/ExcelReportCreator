@@ -45,7 +45,7 @@ Sub LaunchCheckerFileUploadBackend(filePath As String)
     
     Call CompareAllTickets
     
-    Dim lastRowStatus As Long: lastRowStatus = Cells(Rows.Count, 11).End(xlUp).Row
+    Dim lastRowStatus As Long: lastRowStatus = Cells(Rows.count, 11).End(xlUp).Row
     
     'Compare if any tickets needs to be changed to Closed
     For i = 3 To lastRowStatus
@@ -55,7 +55,7 @@ Sub LaunchCheckerFileUploadBackend(filePath As String)
     
     'Check if there are any tickets to be added to report
     
-    Dim lastRowNewTicket As Long: lastRowNewTicket = Cells(Rows.Count, 10).End(xlUp).Row
+    Dim lastRowNewTicket As Long: lastRowNewTicket = Cells(Rows.count, 10).End(xlUp).Row
     
     For addNewTicketToReport = 3 To lastRowNewTicket
         If Not Range("J" & addNewTicketToReport).Value = "" Then
