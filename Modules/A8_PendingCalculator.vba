@@ -1,14 +1,26 @@
 Sub RunPendings()
     '********** Author: Tomasz Grabarczyk **********
-    '**********  Last update: 03.07.2019  **********
+    '**********  Last update: 23.09.2019  **********
 
     Call StartMacroShowMessage(3)
     
     Sheets("PendingCalculator").Select
     Range("A22").Select
     
+    Dim myDataObject As DataObject
+    Set myDataObject = New DataObject
+    myDataObject.GetFromClipboard
+
+    'Check if there is anything in clipboard to be pasted
     If Range("U10") = "Automatic" Then
-        ActiveSheet.Paste
+        If myDataObject.GetFormat(1) = True Then
+            ActiveSheet.Paste
+        Else
+            'If there is nothing is clipboard, show message and exit macro
+            MsgBox "There is nothing to be pasted!"
+            Call StopMacroShowMessage
+            Exit Sub
+        End If
     End If
     
     ActiveSheet.Range("$A$21:$E$500").AutoFilter Field:=1, Criteria1:="<>Status has been changed to*"
